@@ -2,7 +2,7 @@ class Eridianconvert{
 
     // Method to convert decimal to base 6
     public static String decimalToBase6(int decimal) {
-        if (decimal == 0) return "0";
+        if (decimal == 0) return "ℓ";
 
         StringBuilder base6 = new StringBuilder();
         int num = decimal;
@@ -40,8 +40,9 @@ class Eridianconvert{
 
     // Example usage
     public static void main(String[] args) {
-        int decimalNumber = 36;
+        int decimalNumber = 36; //<--Enter the number you want here
         String base6Number = decimalToBase6(decimalNumber);
         System.out.println("Decimal " + decimalNumber + " in base 6 is: " + base6Number);
     }
+
 }
