@@ -1,0 +1,71 @@
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+class Eridianconverter {
+    // Your existing method (unchanged)
+    public static String decimalToBase6(int decimal) {
+        if (decimal == 0) return "ℓ";
+
+        StringBuilder base6 = new StringBuilder();
+        int num = decimal;
+        char eridianunit ;
+
+        while (num > 0) {
+            int remainder = num % 6;
+            if (remainder == 0) {
+                eridianunit = 'ℓ';
+            }
+            else if (remainder == 1) {
+                eridianunit = 'Ɪ';
+            }
+            else if (remainder == 2) {
+                eridianunit = 'V';
+            }
+            else if (remainder == 3) {
+                eridianunit = 'λ';
+            }
+            else if (remainder == 4) {
+                eridianunit = '+';
+            }
+            else{
+                eridianunit = '∀';
+            }
+            base6.append(eridianunit);
+            num /= 6;
+        }
+        return base6.reverse().toString();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        while (true) {
+            LocalTime now = LocalTime.now();
+            String timeStr = now.format(fmt);
+
+            // Earth time components
+            String[] parts = timeStr.split(":");
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+            int seconds = Integer.parseInt(parts[2]);
+
+            // Convert EACH component to Eridian base-6
+            String eridianHours = decimalToBase6(hours);
+            String eridianMinutes = decimalToBase6(minutes);
+            String eridianSeconds = decimalToBase6(seconds);
+
+            // Pad each to 2 digits with leading ℓ (0)
+            while (eridianHours.length() < 2) eridianHours = "ℓ" + eridianHours;
+            while (eridianMinutes.length() < 2) eridianMinutes = "ℓ" + eridianMinutes;
+            while (eridianSeconds.length() < 2) eridianSeconds = "ℓ" + eridianSeconds;
+
+            // Format with colons: HH:MM:SS style
+            String eridianTime = eridianHours + ":" + eridianMinutes + ":" + eridianSeconds;
+
+            System.out.print("\rEarth: " + timeStr + " | Eridian: " + eridianTime);
+            System.out.flush();
+            Thread.sleep(1000);
+        }
+    }
+}
+
